@@ -1,0 +1,28 @@
+# render.yaml
+# This file tells Render how to build and deploy your services.
+# It defines a PostgreSQL database and a Node.js web service.
+
+services:
+  # 1. A PostgreSQL Database
+  - type: psql
+    name: policyportal-db
+    plan: free # Specifies the free instance type
+    databaseName: SPPolicyPortal # The name of the database inside PostgreSQL
+    user: postgres # The user for the database
+
+  # 2. A Node.js Web Service (your API)
+  - type: web
+    name: policyportal-api
+    runtime: node
+    plan: free # Specifies the free instance type
+    buildCommand: "npm install" # How to install dependencies. Use "yarn install" if you use Yarn.
+    startCommand: "node src/index.js" # The command to start your server.
+                                  # IMPORTANT: Change this to match your project!
+                                  # It could be "npm start", "node app.js", "node src/server.js", etc.
+    envVars:
+      - key: DATABASE_URL # This sets the database connection string as an environment variable
+        fromDatabase:
+          name: policyportal-db # This must match the name of the psql service above
+          property: connectionString
+      - key: NODE_ENV
+        value: production
