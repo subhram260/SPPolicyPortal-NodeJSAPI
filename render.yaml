@@ -1,20 +1,24 @@
-services:
-  - type: psql
-    name: policyportal-db
-    plan: free
-    databaseName: SPPolicyPortal
-    user: postgres
+# A corrected and robust render.yaml for the PolicyPortal project
 
+services:
+  # Define the Node.js web service
   - type: web
     name: policyportal-api
     runtime: node
     plan: free
     buildCommand: "npm install"
-    startCommand: "node src/index.js"
+    startCommand: "node src/index.js" # Make sure this command is correct for your project
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: policyportal-db
+          name: policyportal-db      # This must match the name of the database below
           property: connectionString
       - key: NODE_ENV
         value: production
+
+# Define the PostgreSQL database separately
+databases:
+  - name: policyportal-db          # This name is referenced by the service above
+    plan: free
+    databaseName: SPPolicyPortal
+    user: postgres
