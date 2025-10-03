@@ -1,7 +1,6 @@
-# A corrected and robust render.yaml for the PolicyPortal project
+# Corrected render.yaml with valid SQL identifiers
 
 services:
-  # Define the Node.js web service
   - type: web
     name: policyportal-api
     runtime: node
@@ -11,14 +10,13 @@ services:
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: policyportal-db      # This must match the name of the database below
+          name: policyportal-db
           property: connectionString
       - key: NODE_ENV
         value: production
 
-# Define the PostgreSQL database separately
 databases:
-  - name: policyportal-db          # This name is referenced by the service above
+  - name: policyportal-db
     plan: free
-    databaseName: SPPolicyPortal
-    user: postgres
+    databaseName: sp_policy_portal       # CORRECTED: Lowercase with underscores
+    user: policy_portal_user          # CORRECTED: A unique, non-reserved name
