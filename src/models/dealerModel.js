@@ -1,6 +1,6 @@
 import pool from "../config/db.js";
 
-const getAllUsers = async () => {
+const getAllDealers = async () => {
     const query = 'SELECT "user_id","Name","Email","Password","Location","Phone","Role","Status" FROM spp."Users"';
     const result = await pool.query(query);
     return result.rows;
@@ -22,7 +22,7 @@ const getDealerById = async (id) => {
 // };
 
 export {
-    getAllUsers,
+    getAllDealers,
     getDealerById
 //     createDealer
 };
