@@ -1,6 +1,7 @@
 import * as AuthModel from '../models/authModel.js';
 
 const register = async (req, res,next) => {
+     console.log("Register attempt with body:", req.body);
      try {
           const { Name, Email, Password, Role, Location, Phone, Status } = req.body;
           await AuthModel.register(Name, Email, Password, Role, Location, Phone, Status);

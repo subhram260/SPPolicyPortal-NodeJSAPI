@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 
 const register = async (Name, Email, Password, Role, Location, Phone, Status) => {
     // Check for existing user
-    const existingUser = await pool.query('SELECT * FROM spp."Dealers" WHERE "Email" = $1', [Email]);
+    const existingUser = await pool.query('SELECT * FROM spp."Users" WHERE "Email" = $1', [Email]);
     if (existingUser.rows.length > 0) {
         // Throw an error that the controller can catch
         const error = new Error('User with this email already exists');
@@ -18,7 +18,7 @@ const register = async (Name, Email, Password, Role, Location, Phone, Status) =>
 
     // Insert new user into the database
     const result = await pool.query(
-        `INSERT INTO spp."Dealers"("Name", "Email", "Password", "Role", "Location", "Phone", "Status")
+        `INSERT INTO spp."Users"("Name", "Email", "Password", "Role", "Location", "Phone", "Status")
          VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
         [Name, Email.toLowerCase(), hashedPassword, Role, Location, Phone, Status]
     );
@@ -27,7 +27,7 @@ const register = async (Name, Email, Password, Role, Location, Phone, Status) =>
 };
 
 const login = async (Email, Password) => {
-    const result = await pool.query('SELECT * FROM spp."Dealers" WHERE LOWER("Email") = LOWER($1)', [Email]);
+    const result = await pool.query('SELECT * FROM spp."Users" WHERE LOWER("Email") = LOWER($1)', [Email]);
     if (result.rows.length === 0) {
         const error = new Error('Invalid credentials1');
         error.statusCode = 400;
